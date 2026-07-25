@@ -175,6 +175,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           <small>{prospect.club.shortName} admin</small>
           <strong>{title}</strong>
         </div>
+        <Link className="admin-mobile-view" href="/">
+          View site
+        </Link>
         <span className="tier-badge">{tier}</span>
       </header>
 
