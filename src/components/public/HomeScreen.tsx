@@ -67,7 +67,6 @@ export function HomeScreen() {
       </header>
       <div className="kit-home-panel">
         <div className="kit-home-feature">
-          <span>2026 jersey room</span>
           <div className="kit-home-feature-media">
             {featuredKits.map((product, index) => (
               <Image
