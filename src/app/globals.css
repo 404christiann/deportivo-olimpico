@@ -81,6 +81,12 @@ img { max-width:100%; }
 .desktop-nav a::after { content:""; position:absolute; left:0; right:100%; bottom:10px; height:2px; background:var(--accent); transition:right .25s ease; }
 .desktop-nav a:hover::after,.desktop-nav a[data-active="true"]::after { right:0; }
 .desktop-nav a[data-active="true"] { color:var(--primary); }
+.nav-dropdown { position:relative; display:flex; align-items:center; }
+.nav-dropdown-menu { position:absolute; top:calc(100% - 6px); left:50%; min-width:150px; display:grid; gap:2px; padding:8px; border:1px solid color-mix(in srgb,var(--accent) 34%,transparent); border-radius:6px; background:color-mix(in srgb,var(--paper) 96%,transparent); box-shadow:0 18px 42px -30px var(--primary-deep); opacity:0; pointer-events:none; transform:translate(-50%,8px); transition:opacity .18s ease,transform .18s ease; backdrop-filter:blur(14px); }
+.nav-dropdown:hover .nav-dropdown-menu,.nav-dropdown:focus-within .nav-dropdown-menu { opacity:1; pointer-events:auto; transform:translate(-50%,0); }
+.desktop-nav .nav-dropdown-menu a { display:flex; align-items:center; min-height:38px; padding:0 12px; border-radius:4px; color:var(--primary); font-size:.68rem; font-weight:780; letter-spacing:.09em; text-transform:uppercase; white-space:nowrap; }
+.desktop-nav .nav-dropdown-menu a::after { content:none; }
+.desktop-nav .nav-dropdown-menu a:hover,.desktop-nav .nav-dropdown-menu a[data-active="true"] { background:var(--primary); color:var(--on-dark); }
 .site-header[data-scrolled="true"] .desktop-nav a { color:var(--muted); }
 .site-header[data-scrolled="true"] .desktop-nav a:hover,.site-header[data-scrolled="true"] .desktop-nav a[data-active="true"] { color:var(--ink); }
 .header-actions { display:flex; align-items:center; gap:18px; }
@@ -89,13 +95,18 @@ img { max-width:100%; }
 .site-header[data-transparent-hero="true"][data-scrolled="false"] { background:transparent; color:var(--on-dark); box-shadow:none; backdrop-filter:none; }
 .site-header[data-transparent-hero="true"][data-scrolled="false"] .desktop-nav a { color:#fff; }
 .site-header[data-transparent-hero="true"][data-scrolled="false"] .desktop-nav a:hover,.site-header[data-transparent-hero="true"][data-scrolled="false"] .desktop-nav a[data-active="true"] { color:#fff; }
+.site-header[data-transparent-hero="true"][data-scrolled="false"] .nav-dropdown-menu { background:color-mix(in srgb,var(--primary-deep) 82%,transparent); border-color:color-mix(in srgb,var(--accent) 42%,transparent); box-shadow:0 20px 52px -34px #000; }
+.site-header[data-transparent-hero="true"][data-scrolled="false"] .desktop-nav .nav-dropdown-menu a { color:var(--on-dark); }
+.site-header[data-transparent-hero="true"][data-scrolled="false"] .desktop-nav .nav-dropdown-menu a:hover,.site-header[data-transparent-hero="true"][data-scrolled="false"] .desktop-nav .nav-dropdown-menu a[data-active="true"] { background:var(--on-dark); color:var(--primary); }
 .site-header[data-transparent-hero="true"][data-scrolled="false"] .admin-link { background:color-mix(in srgb,var(--on-dark) 10%,transparent); color:var(--on-dark); border-color:color-mix(in srgb,var(--on-dark) 28%,transparent); }
 .menu-button { display:none; border:0; background:none; width:42px; height:42px; padding:11px; }
 .menu-button span { display:block; height:2px; background:currentColor; margin:6px 0; }
 .mobile-menu { position:absolute; top:92px; left:0; right:0; height:calc(100dvh - 122px); padding:25px; background:var(--primary-deep); color:var(--on-dark); z-index:80; overflow:auto; overscroll-behavior:contain; }
 .site-header[data-scrolled="true"] .mobile-menu { top:92px; height:calc(100dvh - 92px); }
 .mobile-menu>div { display:flex; flex-direction:column; }
+.mobile-menu-group { display:flex; flex-direction:column; }
 .mobile-menu a { display:flex; align-items:baseline; gap:16px; padding:15px 4px; border-bottom:1px solid var(--on-dark-line); font-size:clamp(1.7rem,8vw,2.6rem); font-weight:800; letter-spacing:-.03em; line-height:1; }
+.mobile-menu .mobile-sub-link { padding:12px 4px 14px 38px; color:var(--accent-lift); font-size:clamp(1.05rem,5vw,1.45rem); font-weight:780; letter-spacing:.02em; text-transform:uppercase; }
 .mobile-menu small { color:var(--accent-lift); font:600 .65rem var(--font-geist-mono); letter-spacing:.08em; }
 .mobile-menu .mobile-admin { margin-top:22px; font-size:.78rem; font-weight:750; letter-spacing:.08em; text-transform:uppercase; border-bottom:0; color:var(--accent-lift); }
 
