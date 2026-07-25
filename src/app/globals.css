@@ -350,7 +350,6 @@ button.player-card { appearance:none; }
 .schedule-calendar-page::before { content:""; display:block; height:72px; background:var(--panel); }
 .schedule-calendar-shell { width:min(100%,1320px); margin-inline:auto; padding:clamp(58px,6vw,86px) var(--pad-x) clamp(80px,8vw,120px); }
 .schedule-calendar-head { display:flex; align-items:flex-end; justify-content:space-between; gap:32px; }
-.schedule-calendar-head p { margin:0 0 12px; color:var(--accent); font-size:clamp(.78rem,1.3vw,1rem); font-weight:820; letter-spacing:.15em; text-transform:uppercase; }
 .schedule-calendar-head h1 { margin:0; color:var(--display); font-size:clamp(4rem,10vw,8rem); font-weight:900; line-height:.78; letter-spacing:-.08em; text-transform:uppercase; }
 .schedule-calendar-head h1+span { display:block; width:64px; height:4px; margin-top:24px; background:var(--accent); }
 .schedule-month-rail button:focus-visible,.schedule-filter-panel button:focus-visible,.schedule-filter-panel select:focus-visible { outline:3px solid color-mix(in srgb,var(--accent) 32%,transparent); outline-offset:2px; }

@@ -58,8 +58,6 @@ export function ScheduleScreen() {
     && (statusFilter === "all" || fixture.status === statusFilter)
   ));
   const nextFixtureId = seasonFixtures.find((fixture) => fixture.status === "upcoming")?.id;
-  const seasonLabel = seasons.find((season) => season.id === seasonId)?.label ?? "Current";
-
   function changeSeason(nextSeasonId: string) {
     setSeasonId(nextSeasonId);
     const nextFixtures = fixtures
@@ -73,7 +71,6 @@ export function ScheduleScreen() {
       <main className="schedule-calendar-shell">
         <header className="schedule-calendar-head">
           <div>
-            <p>{seasonLabel} season</p>
             <h1>Fixtures</h1>
             <span aria-hidden="true" />
           </div>
