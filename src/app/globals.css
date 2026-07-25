@@ -1163,10 +1163,12 @@ button.staff-card { appearance:none; }
   .schedule-card-grid { grid-template-columns:1fr; }
   .schedule-fixture-header { display:none; }
   .schedule-fixture-list { border-top:2px solid var(--display); }
-  .schedule-fixture-row { min-height:0; grid-template-columns:1fr; gap:14px; padding:22px 0; }
+  .schedule-fixture-row { min-height:0; grid-template-columns:1fr; gap:16px; padding:24px 18px; }
   .schedule-fixture-index { display:none; }
   .schedule-fixture-date { align-items:flex-start; }
-  .schedule-fixture-opponent { padding-inline:0; flex-wrap:wrap; }
+  .schedule-fixture-opponent { display:grid; grid-template-columns:58px minmax(0,1fr); gap:10px 14px; padding-inline:0; }
+  .schedule-fixture-mark { width:58px; height:58px; grid-row:1 / span 2; }
+  .schedule-fixture-opponent>span:not(.schedule-fixture-mark),.schedule-fixture-opponent b,.schedule-fixture-opponent em { grid-column:2; justify-self:start; }
   .schedule-fixture-opponent strong { white-space:normal; }
   .schedule-fixture-opponent small { white-space:normal; }
   .schedule-fixture-result { justify-content:flex-start; text-align:left; }
