@@ -8,10 +8,10 @@ import { prospect } from "@/config/prospect";
 import type { FeatureKey } from "@/lib/tiers";
 import { useHasFeature } from "@/components/tier/TierProvider";
 
-type NavItem = { href: string; label: string; feature?: FeatureKey; children?: { href: string; label: string }[] };
+type NavItem = { href?: string; label: string; feature?: FeatureKey; children?: { href: string; label: string }[] };
 
 const NAV_ITEMS: NavItem[] = [
-  { href: "/", label: "Home" }, { href: "/club", label: "About" }, { href: "/roster", label: "Roster" }, { href: "/schedule", label: "Schedule", children: [{ href: "/tryouts", label: "Tryouts" }] },
+  { href: "/", label: "Home" }, { href: "/club", label: "About" }, { href: "/roster", label: "Roster" }, { label: "Schedule", children: [{ href: "/schedule", label: "Matches" }, { href: "/tryouts", label: "Tryouts" }] },
   { href: "/store", label: "Store", feature: "store" },
   { href: "/sponsors", label: "Contact", feature: "sponsors" },
 ];
@@ -58,21 +58,25 @@ export function SiteHeader() {
     </div>
     <nav className="desktop-nav" aria-label="Main navigation">
       {navItems.map((item) => item.children ? (
-        <div className="nav-dropdown" key={item.href}>
-          <Link data-active={pathname === item.href || item.children.some((child) => child.href === pathname)} href={item.href}>{item.label}</Link>
+        <div className="nav-dropdown" key={item.label}>
+          <button className="nav-dropdown-trigger" data-active={item.children.some((child) => child.href === pathname)} type="button">{item.label}</button>
           <div className="nav-dropdown-menu" aria-label={`${item.label} submenu`}>
             {item.children.map((child) => <Link data-active={pathname === child.href} key={child.href} href={child.href}>{child.label}</Link>)}
           </div>
         </div>
-      ) : <Link data-active={pathname === item.href} key={item.href} href={item.href}>{item.label}</Link>)}
+      ) : <Link data-active={pathname === item.href} key={item.href} href={item.href!}>{item.label}</Link>)}
     </nav>
     <div className="header-actions">
       <Link href="/admin" className="admin-link">Admin preview</Link>
       <button className="menu-button" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? "Close navigation" : "Open navigation"}><span/><span/></button>
     </div>
     {open && <div className="mobile-menu" id="mobile-navigation">
-      <div>{navItems.map((item, index) => <div className="mobile-menu-group" key={item.href}>
-        <Link href={item.href} onClick={() => setOpen(false)}><small>0{index + 1}</small>{item.label}</Link>
+      <div>{navItems.map((item, index) => <div className="mobile-menu-group" key={item.href ?? item.label}>
+        {item.href ? (
+          <Link href={item.href} onClick={() => setOpen(false)}><small>0{index + 1}</small>{item.label}</Link>
+        ) : (
+          <span className="mobile-menu-label"><small>0{index + 1}</small>{item.label}</span>
+        )}
         {item.children?.map((child) => <Link className="mobile-sub-link" key={child.href} href={child.href} onClick={() => setOpen(false)}><small>--</small>{child.label}</Link>)}
       </div>)}</div>
       <Link className="mobile-admin" href="/admin" onClick={() => setOpen(false)}>Open admin preview</Link>
