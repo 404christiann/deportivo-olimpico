@@ -5,10 +5,10 @@ import { prospect } from "@/config/prospect";
 import { Providers } from "./providers";
 import "./globals.css";
 
-const sora = localFont({
-  src: "./fonts/sora-latin.woff2",
-  variable: "--font-sora",
-  weight: "100 800",
+const archivo = localFont({
+  src: "./fonts/archivo-variable.ttf",
+  variable: "--font-archivo",
+  weight: "100 900",
   display: "swap",
 });
 
@@ -40,7 +40,7 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${sora.variable} ${inter.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${archivo.variable} ${inter.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body
         className="min-h-full"
