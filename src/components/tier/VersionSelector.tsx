@@ -6,7 +6,7 @@ import { useTier } from "./TierProvider";
 
 export function VersionSelector() {
   const { tier, setTier } = useTier();
-  const [collapsed, setCollapsed] = useState(true);
+  const [collapsed, setCollapsed] = useState(false);
   if (collapsed) return <button className="version-chip" onClick={() => setCollapsed(false)} aria-label="Open concept version selector"><span className="version-dot" aria-hidden/>Concept: {TIER_LABELS[tier]}</button>;
   return (
     <aside className="version-selector" aria-label="Concept version selector">
