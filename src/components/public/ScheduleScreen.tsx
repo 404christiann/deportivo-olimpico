@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { prospect } from "@/config/prospect";
@@ -7,16 +9,28 @@ import type { Fixture } from "@/config/types";
 import { useMockData } from "@/lib/store/MockDataProvider";
 import { useActiveTeam } from "@/components/layout/ActiveTeamProvider";
 import { useHasFeature } from "@/components/tier/TierProvider";
-import { ScheduleMatchCard } from "./ScheduleMatchCard";
 
 type StatusFilter = "all" | Fixture["status"];
 
 const monthLabel = new Intl.DateTimeFormat("en-US", { month: "short" });
 const monthHeading = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric" });
+const fixtureDateFormat = new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric" });
+const fixtureTimeFormat = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" });
 const monthKey = (date: string) => date.slice(0, 7);
 
 function initialMonth(fixtures: Fixture[]) {
   return monthKey(fixtures.find((fixture) => fixture.status === "upcoming")?.date ?? fixtures.at(-1)?.date ?? new Date().toISOString());
+}
+
+function opponentInitials(name: string) {
+  return name.split(" ").map((word) => word[0]).join("").slice(0, 3).toUpperCase();
+}
+
+function resultFor(fixture: Fixture) {
+  if (!fixture.result) return null;
+  const { clubScore, opponentScore } = fixture.result;
+  const label = clubScore > opponentScore ? "W" : clubScore < opponentScore ? "L" : "D";
+  return { label, score: `${clubScore}-${opponentScore}` };
 }
 
 export function ScheduleScreen() {
@@ -44,6 +58,7 @@ export function ScheduleScreen() {
     && (statusFilter === "all" || fixture.status === statusFilter)
   ));
   const nextFixtureId = seasonFixtures.find((fixture) => fixture.status === "upcoming")?.id;
+  const seasonLabel = seasons.find((season) => season.id === seasonId)?.label ?? "Current";
 
   function changeSeason(nextSeasonId: string) {
     setSeasonId(nextSeasonId);
@@ -58,7 +73,9 @@ export function ScheduleScreen() {
       <main className="schedule-calendar-shell">
         <header className="schedule-calendar-head">
           <div>
-            <h1>Team schedule</h1>
+            <p>{seasonLabel} season</p>
+            <h1>Fixtures</h1>
+            <span aria-hidden="true" />
           </div>
         </header>
 
@@ -109,13 +126,21 @@ export function ScheduleScreen() {
 
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
-              className="schedule-card-grid"
+              className="schedule-fixture-list"
               key={`${activeMonth}-${statusFilter}-${seasonId}`}
               initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
               transition={{ duration: prefersReducedMotion ? 0.12 : 0.4, ease: [0.22, 1, 0.36, 1] }}
             >
+              {visibleFixtures.length > 0 && (
+                <div className="schedule-fixture-header" aria-hidden="true">
+                  <span />
+                  <span>Date / Time</span>
+                  <span>Opponent</span>
+                  <span>Result</span>
+                </div>
+              )}
               {visibleFixtures.map((fixture, index) => (
                 <motion.div
                   key={fixture.id}
@@ -123,7 +148,39 @@ export function ScheduleScreen() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.48, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <ScheduleMatchCard fixture={fixture} isNext={fixture.id === nextFixtureId} />
+                  <Link
+                    className="schedule-fixture-row"
+                    data-next={fixture.id === nextFixtureId}
+                    data-past={fixture.status === "played"}
+                    href={`/schedule/${fixture.id}`}
+                  >
+                    <span className="schedule-fixture-index">{String(index + 1).padStart(2, "0")}</span>
+                    <span className="schedule-fixture-date">
+                      <strong>{fixtureDateFormat.format(new Date(fixture.date))}</strong>
+                      <small>{fixtureTimeFormat.format(new Date(fixture.date))}</small>
+                    </span>
+                    <span className="schedule-fixture-opponent">
+                      <span className="schedule-fixture-mark">
+                        {fixture.homeAway === "home" ? (
+                          <Image src={prospect.branding.crestOnDark ?? prospect.branding.crest} alt="" fill sizes="52px" />
+                        ) : opponentInitials(fixture.opponent)}
+                      </span>
+                      <span>
+                        <strong>{fixture.opponent}</strong>
+                        <small>{fixture.venue}</small>
+                      </span>
+                      {fixture.id === nextFixtureId && <b>Next</b>}
+                      <em>{fixture.homeAway}</em>
+                    </span>
+                    <span className="schedule-fixture-result">
+                      {resultFor(fixture) ? (
+                        <>
+                          <strong>{resultFor(fixture)?.label}</strong>
+                          <b>{resultFor(fixture)?.score}</b>
+                        </>
+                      ) : <small>Match area</small>}
+                    </span>
+                  </Link>
                 </motion.div>
               ))}
               {visibleFixtures.length === 0 && (
